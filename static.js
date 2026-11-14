@@ -84,11 +84,22 @@
   const articles = $$("#works article");
   const filters = $$('[data-cursor="FILTER"]');
   filters.forEach((button) => button.addEventListener("click", () => {
+    const filterName = button.textContent.trim();
+
+    if (filterName === "Brand & Spatial") {
+      const target = document.getElementById("brand-spatial") || articles[5];
+      if (target) {
+        target.hidden = false;
+        target.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      return;
+    }
+
     filters[0].classList.remove("bg-white", "text-black", "border-white", "font-bold");
     filters.forEach((item) => item.classList.toggle("static-active", item === button));
     articles.forEach((article, index) => {
-      article.hidden = button.textContent.trim() !== "All" &&
-        data.projects[index].category !== button.textContent.trim();
+      article.hidden = filterName !== "All" &&
+        data.projects[index].category !== filterName;
     });
   }));
 
